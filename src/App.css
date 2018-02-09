@@ -1,7 +1,7 @@
 .App {
   text-align: center;
   background: #29516d;
-  height: 100vh;
+  height: auto;
 }
 
 .App-logo {
@@ -35,20 +35,25 @@
     transform: rotate(360deg);
   }
 }
-
+.flex {
+  display: flex;
+}
+.wrap {
+  flex-wrap: wrap;
+}
+.center {
+  justify-content: center;
+}
 .Selectors {
   display: flex;
   justify-content: space-around;
   margin: 30px 300px;
 }
 
-.Box-Container {
-  display: flex;
-  justify-content: center;
-}
 .VerseHolder {
   display: flex;
-  justify-content: center;
+  flex-flow: column;
+  justify-content: space-between;
   align-items: center;
   border-radius: 30px;
   border: 1px #708ea4 solid;
@@ -57,4 +62,51 @@
   background: #032137;
   padding: 10px;
   color: #708ea4;
+  margin: 10px 10px;
+}
+.FavHolder {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 30px;
+  border: 1px #505f90 solid;
+  width: 16vw;
+  height: 130px;
+  background: #708ea4;
+  padding: 10px;
+  color: #172556;
+  margin: 10px 10px;
+}
+.favoriteButton {
+  background: white;
+  height: 4vh;
+  width: 7vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  border: 1px #032136;
+}
+.favoriteButton:hover {
+  cursor: pointer;
+  background: #032136;
+  border: 1px white dashed;
+  color: white;
+}
+.deleteButton {
+  background: white;
+  height: 4vh;
+  width: 7vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  border: 1px #032136;
+}
+.deleteButton:hover {
+  cursor: pointer;
+  background: #b91010;
+  border: 1px white dashed;
+  color: rgb(229, 233, 233);
 }

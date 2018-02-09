@@ -1,11 +1,15 @@
 const axios = require("axios");
 const baseUrl = "https://bibler-server.prestonlee.com";
 
-let bibles = [];
-let books = [];
-let chapters = [];
-let verses = [];
-let favoriteVerses = [];
+let favorites = [
+  {
+    id: 0,
+    title: "Proverbs 3 : 5",
+    text:
+      "Trust in Jehovah with all thy heart, And lean not upon thine own understanding"
+  }
+];
+let id = 1;
 
 const getBibles = (req, res, next) => {
   axios
@@ -55,13 +59,34 @@ const getVerses = (req, res, next) => {
 };
 
 const favoriteVerse = (req, res, next) => {
-  let titleID = req.params.version;
-  let verseText = req.params.book;
+  const { title, text } = req.body;
+  favorites.push({ id, title, text });
+  id++;
+  res.status(200).send(favorites);
+  console.log("functioning");
+};
+
+const favoriteVerses = (req, res, next) => {
+  res.status(200).json(favorites);
+  console.log(favorites);
+};
+
+const unfavorite = (req, res, next) => {
+  const deleteID = req.params.id;
+  let verseID = favorites.findIndex(verse => verse.id == deleteID);
+  console.log(deleteID);
+  console.log(verseID);
+  favorites.splice(verseID, 1);
+  res.status(200).json(favorites);
+  console.log(favorites);
 };
 
 module.exports = {
   getBibles,
   getBooks,
   getChapters,
-  getVerses
+  getVerses,
+  favoriteVerse,
+  favoriteVerses,
+  unfavorite
 };

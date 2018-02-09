@@ -3,6 +3,9 @@ import logo from "./logo.svg";
 import "./App.css";
 import axios from "axios";
 import Selector from "./components/Selector";
+import Passage from "./components/Passage";
+import Favorites from "./components/Favorites";
+import FavoriteButton from "./components/FavoriteButton";
 
 class App extends Component {
   constructor() {
@@ -10,17 +13,14 @@ class App extends Component {
     this.state = {
       version: {},
       versions: [],
-      versionID: 0,
       book: {},
       books: [],
-      bookID: 0,
       chapter: "",
       chapters: [],
-      chapterID: 0,
       verse: {},
       verses: [],
-      verseID: 0,
-      randomVerse: {}
+      randomVerse: {},
+      updateState: false
     };
     this.getChaps = this.getChaps.bind(this);
     this.getVerses = this.getVerses.bind(this);
@@ -28,6 +28,7 @@ class App extends Component {
     this.updateBook = this.updateBook.bind(this);
     this.updateChapter = this.updateChapter.bind(this);
     this.updateVerse = this.updateVerse.bind(this);
+    this.updateState = this.updateState.bind(this);
   }
   componentDidMount() {
     axios
@@ -35,8 +36,7 @@ class App extends Component {
       .then(response => {
         this.setState({
           version: response.data[0],
-          versions: response.data,
-          versionID: response.data[0].id
+          versions: response.data
         });
       })
       .then(response => {
@@ -45,8 +45,7 @@ class App extends Component {
           .then(response => {
             this.setState({
               book: response.data[0],
-              books: response.data,
-              bookID: response.data[0].id
+              books: response.data
             });
           })
           .then(response => {
@@ -122,6 +121,10 @@ class App extends Component {
     this.setState({ verse: newanswer[0] });
   }
 
+  updateState() {
+    this.setState({ updateState: !this.state.updateState });
+  }
+
   render() {
     let chapterList = Array.from(new Set(this.state.chapters));
     let verseList = this.state.verses.map((val, index) => Number(val.slug));
@@ -134,9 +137,6 @@ class App extends Component {
           </p>
         </header>
         <h1>{this.state.version.name}</h1>
-        <h2>
-          {this.state.book.name} {this.state.chapter} : {this.state.verse.slug}
-        </h2>
         <div className="Selectors">
           <Selector
             criteria={this.state.versions}
@@ -152,15 +152,27 @@ class App extends Component {
           />
           <Selector criteria={verseList} onChange={e => this.updateVerse(e)} />
         </div>
-        <div className="Box-Container">
-          <div className="VerseHolder">{this.state.verse.text}</div>
+        <div className="flex center">
+          <Passage
+            title={`${this.state.book.name} ${this.state.chapter} :
+        ${this.state.verse.ordinal}`}
+            text={this.state.verse.text}
+            className="VerseHolder"
+          >
+            <FavoriteButton
+              title={`${this.state.book.name} ${this.state.chapter} : ${
+                this.state.verse.ordinal
+              }`}
+              text={this.state.verse.text}
+              updateState={this.updateState}
+            />
+          </Passage>
         </div>
 
-        <button
-          onClick={() => {
-            console.log(this.state.chapter, this.state.verse);
-          }}
-          //<Favorites verse={this.state.verse.text} />
+        <Favorites
+          updateVerse={this.updateVerse}
+          updateState={this.state.updateState}
+          updateStateFnc={this.updateState}
         />
       </div>
     );

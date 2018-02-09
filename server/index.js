@@ -5,7 +5,10 @@ const {
   getBibles,
   getBooks,
   getChapters,
-  getVerses
+  getVerses,
+  favoriteVerse,
+  favoriteVerses,
+  unfavorite
 } = require(`${__dirname}/controllers/mainCtrl`);
 
 const port = 3005;
@@ -23,7 +26,11 @@ app.get("/api/versions", getBibles);
 app.get("/api/books", getBooks);
 app.get("/api/chapters/:version/:book", getChapters);
 app.get("/api/verses/:version/:book/:chapter", getVerses);
+app.get("/api/favorites", favoriteVerses);
 
+app.post("/api/favorite", favoriteVerse);
+
+app.delete("/api/unfavorite/:id", unfavorite);
 app.listen(port, () => {
   console.log(`Litening on Port: ${port}`);
 });
